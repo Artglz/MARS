@@ -12,7 +12,6 @@ from cflib.utils import uri_helper
 URI = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E7')
 position_estimate = [0, 0]
 
-# Only output errors from the logging framework
 logging.basicConfig(level=logging.ERROR)
 
 def log_pos_callback(timestamp, data, logconf):
@@ -36,7 +35,7 @@ if __name__ == '__main__':
     # Initialize the low-level drivers
     cflib.crtp.init_drivers()
 
-    csv_file_path = 'output_positions.csv'
+    csv_file_path = 'robot_trajectory.csv'
     e_puck_x_values, e_puck_y_values = read_csv(csv_file_path)
 
     with SyncCrazyflie(URI, cf=Crazyflie(rw_cache='./cache')) as scf:
@@ -53,8 +52,7 @@ if __name__ == '__main__':
                 default_height=0.5,
                 controller=PositionHlCommander.CONTROLLER_PID) as pc:
 
-            for x_target, y_target in zip(e_puck_x_values, e_puck_y_values):
-                # Go to the specified x, y values in the trajectory
-                pc.go_to(x_target, y_target, 0.5)
+            #for x_target, y_target in zip(e_puck_x_values, e_puck_y_values):
+            pc.go_to(0.5, 0.5, 0.5)
 
         logconf.stop()
