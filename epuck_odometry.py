@@ -69,7 +69,6 @@ csv_filename = "robot_trajectory.csv"
 with open(csv_filename, mode='w', newline='') as csv_file:
     csv_writer = csv.writer(csv_file)
     
-    # Write header to the CSV file
     csv_writer.writerow(['X', 'Y'])
     start = time.time()
 
@@ -85,14 +84,12 @@ with open(csv_filename, mode='w', newline='') as csv_file:
         right_steps = struct.unpack("<h", struct.pack("<BB", sensors[81], sensors[82]))[0]
 
         
-        # Perform your equation or calculations here
         left_displacement = (left_steps - left_encoder_prev)
         right_displacement = (right_steps - right_encoder_prev)
         
         left_encoder_prev = left_steps
         right_encoder_prev = right_steps
         
-        # Calculate linear and angular displacement in meters and radians
         linear_distance = (left_displacement + right_displacement) * (2 * pi * wheel_radius) / (2 * 1000)
         angular_distance = (right_displacement - left_displacement) * (2 * pi) / (1000 * wheel_separation_distance) 
 
@@ -119,7 +116,9 @@ with open(csv_filename, mode='w', newline='') as csv_file:
             set_motor_speeds(-200,200)
         elif time_diff < 22.0 and time_diff > 13.5:
             set_motor_speeds(600, 600)
-        if time_diff > 22.0:
+        elif time_diff < 23.0 and time_diff > 22.0:
+            set_motor_speeds(0,0)
+        elif time_diff > 23.0:
             break
     
 ser.close()
