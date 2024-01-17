@@ -76,7 +76,6 @@ csv_filename = "robot_steps.csv"
 with open(csv_filename, mode='w', newline='') as csv_file:
     csv_writer = csv.writer(csv_file)
     
-    # Write header to the CSV file
     csv_writer.writerow(['Left', 'Right', 'PLeft', 'PRight'])
     start = time.time()
 
